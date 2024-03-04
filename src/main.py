@@ -1,25 +1,14 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
 from summarization import get_summarization
+from schema import Summary
 
 app = FastAPI()
-articlee = """
-    CJ그룹이 2024년 정기 임원인사를 단행했다. 일반적으로 정기 인사는 11월부터 12월까지 연말에 이뤄지지만 올해엔 이례적으로 2월 중순에 임원 인사를 발표했다. 그만큼 이번 인사에 고심을 거듭했다는 의미로 읽힌다. 
-    CJ그룹은 CJ제일제당·CJ대한통운 등 주요 계열사 CEO를 교체하고 임원(경영리더) 19명을 승진시키는 내용의 2024년 정기임원인사를 단행했다고 16일 밝혔다.
-    CJ제일제당 대표에는 강신호 CJ대한통운 대표이사가 4년 만에 부회장 직을 달고 돌아온다. CJ그룹에서 공채 출신이 부회장으로 승진한 것은 처음이다.강 대표는 1988년 그룹 공채로 입사해 CJ그룹 인사팀장, CJ프레시웨이 대표이사, CJ제일제당 식품사업부문 대표 등을 거쳤다. 
-    지난 2021년 정기인사에서 CJ대한통운 대표이사로 부임해 주요 사업부문의 구조를 혁신하고 조직문화를 체질부터 개선했다는 평가를 받았다. 지난해엔 사상 최대 영업이익인 4802억 원을 달성하는 등 재임 기간 중 대한통운 실적 성장을 이끌었다.
-    강 대표가 자리를 비운 CJ대한통운 신임 대표이사에는 신영수 CJ대한통운 한국사업부문 대표가 취임한다. 신 대표는 신규 브랜드 '오네(O-NE)'를 성공적으로 론칭하는 등 택배·이커머스 부문에서 미래형 사업모델을 성공적으로 구축했다는 평가를 받았다.
-    CJ그룹의 미래 성장을 이끌어갈 신임 경영리더에는 2020년 이후 가장 적은 19명이 이름을 올렸다. 지난 1월 이재현 회장이 직접 현장을 방문해 성과를 격려한 CJ대한통운과 CJ올리브영에서 각각 6명, 4명이 나왔고 CJ제일제당(3명)과 CJ ENM 엔터부문(2명)도 복수 승진자를 배출했다.
-    임원 인사 규모는 작았지만 '젊은 인재' 발탁 기조는 이어갔다. CJ올리브영에서 임원으로 승진한 손모아 경영리더와 권가은 경영리더는 각각 87년생, 86년생으로 30대에 임원으로 승진했다. 1990년생인 CJ CGV의 방준식 경영리더는 이재현 회장의 장남 이선호 경영리더를 제외하면 유일한 90년생 임원이 됐다.
-    CJ그룹 관계자는 "실적 있는 곳에 승진 있다는 기본 원칙 아래 철저히 성과 중심으로 이뤄진 인사”라며 “어려운 경영 상황 속에서도 미래 성장을 고려해 최소폭의 임원 승진을 단행했다"고 말했다. 
-    """
 
-class SummaryNewsRequest(BaseModel):
-    article: str
 
 @app.post("/summary")
-def summary_news(request: SummaryNewsRequest):
-    summary = get_summarization(request.article)
-    return summary
+def summary_news(request: Summary):
+    return {"summaryNews": get_summarization(request)}
 
-
+@app.get("/")
+def hello():
+    return {"hello": "world"}
